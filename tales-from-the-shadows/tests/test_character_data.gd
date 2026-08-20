@@ -48,3 +48,21 @@ func _ready() -> void:
 	print("Critical Success: ", persuasion_result.critical_success)
 	print("Critical Failure: ", persuasion_result.critical_failure)
 	
+
+	var character_state := CharacterState.new()
+	character_state.initialize(character_data)
+	
+	print("----- CHARACTER STATE -----")
+	print("Max HP: ", character_data.get_max_hp())
+	print("Current HP: ", character_state.current_hp)
+	print("Temporary HP: ", character_state.temporary_hp)
+
+	character_state.take_damage(5)
+	
+	print("After 5 damage:")
+	print("Current HP: ", character_state.current_hp)
+	
+	character_state.heal(3, character_data.get_max_hp())
+	
+	print("After healing:")
+	print("Current HP: ", character_state.current_hp)

@@ -26,6 +26,12 @@ class_name CharacterData
 
 @export var skill_expertises: Array[SkillType.Type]
 
+
+func get_max_hp() -> int:
+	return 10 + get_ability_modifier_by_type(
+		AbilityType.Type.CONSTITUTION
+	)
+
 #Skills
 func get_skill_modifier(skill: SkillType.Type) -> int:
 	var ability := SkillType.get_ability(skill)

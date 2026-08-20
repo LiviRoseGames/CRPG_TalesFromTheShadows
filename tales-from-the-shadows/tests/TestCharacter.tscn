@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://d2h4oof4kju2m"]
+
+[ext_resource type="PackedScene" uid="uid://dt05qdkrqw3ew" path="res://characters/character.tscn" id="1_vd3pj"]
+[ext_resource type="Resource" uid="uid://cykxea7hybe2q" path="res://data/test_character.tres" id="2_7aq7e"]
+[ext_resource type="Resource" uid="uid://cgtq62btawohp" path="res://data/campaign_characters/Lulen.tres" id="3_7aq7e"]
+
+[node name="TestCharacter" type="Node2D" unique_id=1015391817]
+
+[node name="Character" parent="." unique_id=1147909112 instance=ExtResource("1_vd3pj")]
+character_data = ExtResource("2_7aq7e")
+
+[node name="Character2" parent="." unique_id=1732388510 instance=ExtResource("1_vd3pj")]
+character_data = ExtResource("3_7aq7e")
