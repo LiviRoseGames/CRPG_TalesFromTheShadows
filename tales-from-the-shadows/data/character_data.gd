@@ -3,9 +3,16 @@ class_name CharacterData
 
 #const AbilityType = preload("res://data/ability_type.gd")
 
+enum CharacterOrigin {
+	PLAYER_CREATED,
+	PREDEFINED
+}
+
+@export var character_origin: CharacterOrigin = CharacterOrigin.PLAYER_CREATED
+
 @export_category("Identity")
 @export var character_name: String = ""
-@export var description: String = ""
+@export_multiline() var description: String = ""
 
 @export_category("Progression")
 @export var level: int = 1
@@ -73,6 +80,25 @@ func get_ability_score(ability: AbilityType.Type) -> int:
 			return charisma
 
 	return 0
+
+func set_ability_score(
+	ability: AbilityType.Type,
+	value: int
+) -> void:
+	match ability:
+		AbilityType.Type.STRENGTH:
+			strength = value
+		AbilityType.Type.DEXTERITY:
+			dexterity = value
+		AbilityType.Type.CONSTITUTION:
+			constitution = value
+		AbilityType.Type.INTELLIGENCE:
+			intelligence = value
+		AbilityType.Type.WISDOM:
+			wisdom = value
+		AbilityType.Type.CHARISMA:
+			charisma = value
+
 
 func get_ability_modifier_by_type(ability: AbilityType.Type) -> int:
 	return get_ability_modifier(get_ability_score(ability))
