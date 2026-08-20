@@ -21,6 +21,7 @@ GameManager="*uid://dpbgfhncrwyoe"
 SceneManager="*uid://5q64g3ileoyh"
 WorldState="*uid://dj6flywm1xmyd"
 RulesManager="*uid://p85npcqneujx"
+PartyManager="*uid://bmkioqb6rkpal"
 
 [display]
 
