@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://cykxea7hybe2q"]
+
+[ext_resource type="Resource" uid="uid://cjr3b0uajrkic" path="res://data/test_wizard.tres" id="1_7abel"]
+[ext_resource type="Script" uid="uid://cwwjskuwu62bm" path="res://data/character_data.gd" id="1_ipcrd"]
+
+[resource]
+script = ExtResource("1_ipcrd")
+character_name = "Test Character"
+description = "A temporary test character."
+character_class = ExtResource("1_7abel")
+strength = 12
+dexterity = 14
+constitution = 13
+wisdom = 11
+charisma = 16
+skill_proficiencies = Array[int]([4])
+skill_expertises = Array[int]([13])
+metadata/_custom_type_script = "uid://cwwjskuwu62bm"

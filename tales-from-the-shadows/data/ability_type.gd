@@ -1,0 +1,10 @@
+class_name AbilityType
+
+enum Type {
+	STRENGTH,
+	DEXTERITY,
+	CONSTITUTION,
+	INTELLIGENCE,
+	WISDOM,
+	CHARISMA
+}

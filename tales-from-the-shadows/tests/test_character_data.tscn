@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://eg1jx2gcoknm"]
+
+[ext_resource type="Script" uid="uid://cveql7rirxrdr" path="res://tests/test_character_data.gd" id="1_f16im"]
+[ext_resource type="Resource" uid="uid://cykxea7hybe2q" path="res://data/test_character.tres" id="2_da3pn"]
+
+[node name="TestCharacterData" type="Node" unique_id=1590707959]
+script = ExtResource("1_f16im")
+character_data = ExtResource("2_da3pn")

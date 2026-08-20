@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ClassData" format=3 uid="uid://cjr3b0uajrkic"]
+
+[ext_resource type="Script" uid="uid://rdlnw3buporg" path="res://data/class_data.gd" id="1_q8cxa"]
+
+[resource]
+script = ExtResource("1_q8cxa")
+character_class_name = "Wizard"
+description = "A spellcasting class."
+metadata/_custom_type_script = "uid://rdlnw3buporg"
