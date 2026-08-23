@@ -10,6 +10,9 @@ signal condition_removed(condition: ConditionType.Type)
 
 @export var character_data: CharacterData
 
+@export_category("Movement")
+@export var move_speed: float = 200.0
+
 var character_state: CharacterState
 
 
@@ -28,6 +31,20 @@ func _ready() -> void:
 	print("Character spawned: ", character_data.character_name)
 	print("Level: ", character_data.level)
 	print("Current HP: ", character_state.current_hp)
+
+func _physics_process(_delta: float) -> void:
+	handle_movement()
+	move_and_slide()
+
+func handle_movement() -> void:
+	var direction := Input.get_vector(
+		"move_left",
+		"move_right",
+		"move_up",
+		"move_down"
+	)
+
+	velocity = direction * move_speed
 
 func _on_health_changed(current_hp: int, max_hp: int) -> void:
 	print("HP: ", current_hp, " / ", max_hp)

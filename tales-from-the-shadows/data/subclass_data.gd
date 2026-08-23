@@ -1,12 +1,9 @@
 extends Resource
-class_name ClassData
+class_name SubclassData
 
 @export_category("Identity")
-@export var character_class_name: String = ""
+@export var subclass_name: String = ""
 @export_multiline var description: String = ""
-
-@export_category("Hit Points")
-@export var hit_die: int = 8
 
 @export_category("Progression")
 @export var levels: Array[ClassLevelData] = []

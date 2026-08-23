@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://1dxiod6ai3ev"]
+
+[ext_resource type="Script" uid="uid://bi6ncfbljt72c" path="res://tests/rules_test.gd" id="1_l8vn1"]
+
+[node name="RulesTest" type="Control" unique_id=111143137]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l8vn1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=529011482]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.5, 0.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1716490437]
+layout_mode = 2
+
+[node name="NormalButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=310534637]
+layout_mode = 2
+text = "Normal Ability Check"
+
+[node name="AdvantageButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1242583509]
+layout_mode = 2
+text = "Advantage Ability Check"
+
+[node name="DisadvantageButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1013572246]
+layout_mode = 2
+text = "Disadvantage Ability Check"
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/VBoxContainer" unique_id=459787281]
+layout_mode = 2
+
+[node name="ActionButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1848780514]
+layout_mode = 2
+text = "Use Action"
+
+[node name="BonusActionButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1820460621]
+layout_mode = 2
+text = "Use Bonus Action"
+
+[node name="ReactionButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=486022681]
+layout_mode = 2
+text = "Use Reaction"
+
+[node name="ResetTurnButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=96550380]
+layout_mode = 2
+text = "Reset Turn"
+
+[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/VBoxContainer" unique_id=683101894]
+layout_mode = 2
+
+[node name="SavingThrowButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1621335591]
+layout_mode = 2
+text = "Saving Throw"
+
+[node name="AttackButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=656099508]
+layout_mode = 2
+text = "Attack"
+
+[node name="ResultsLabel" type="Label" parent="HBoxContainer" unique_id=684759380]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Results:"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/NormalButton" to="." method="_on_normal_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/AdvantageButton" to="." method="_on_advantage_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/DisadvantageButton" to="." method="_on_disadvantage_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ActionButton" to="." method="_on_action_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/BonusActionButton" to="." method="_on_bonus_action_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ReactionButton" to="." method="_on_reaction_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ResetTurnButton" to="." method="_on_reset_turn_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/SavingThrowButton" to="." method="_on_saving_throw_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/AttackButton" to="." method="_on_attack_button_pressed"]

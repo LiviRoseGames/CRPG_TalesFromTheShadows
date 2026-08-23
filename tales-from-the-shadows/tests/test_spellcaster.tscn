@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bnh12byswxhll"]
+
+[ext_resource type="Script" uid="uid://ctipy0ompikkc" path="res://tests/test_spellcaster.gd" id="1_f2kx5"]
+[ext_resource type="Script" uid="uid://jejdgiitubr" path="res://magic/systems/spell_caster.gd" id="2_f7rwn"]
+
+[node name="TestSpellcaster" type="Node" unique_id=1267160976]
+script = ExtResource("1_f2kx5")
+
+[node name="SpellCaster" type="Node2D" parent="." unique_id=1990231179]
+script = ExtResource("2_f7rwn")

@@ -16,9 +16,10 @@ enum CharacterOrigin {
 
 @export_category("Progression")
 @export var level: int = 1
+@export var experience_points: int = 0
 
-@export_category("Class")
-@export var character_class: ClassData
+@export_category("Classes")
+@export var character_classes: Array[ClassData] = []
 
 @export_category("Ability Scores")
 @export var strength: int = 10
@@ -32,6 +33,9 @@ enum CharacterOrigin {
 @export var skill_proficiencies: Array[SkillType.Type] = []
 
 @export var skill_expertises: Array[SkillType.Type]
+
+@export_category("Defenses")
+@export var armor_class: int = 10
 
 
 func get_max_hp() -> int:

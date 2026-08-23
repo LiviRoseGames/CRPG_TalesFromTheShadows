@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dq4imag88orx"]
+
+[ext_resource type="Script" uid="uid://dlxoh8ln8rbhb" path="res://combat_manager.gd" id="1_puw3m"]
+[ext_resource type="Resource" uid="uid://lhgxu0cw61xm" path="res://magic/data/spells/test_spell.tres" id="2_c11yd"]
+[ext_resource type="Script" uid="uid://prishsqrc6te" path="res://combat/combat_grid.gd" id="2_wfdjv"]
+[ext_resource type="Script" uid="uid://bsoco2hal03ha" path="res://combat/combatant.gd" id="3_l68es"]
+[ext_resource type="Texture2D" uid="uid://dyi0y21mtqhkk" path="res://assets/Basic Character template 4-direction/Idle/Idle_front.png" id="4_lk7ft"]
+[ext_resource type="Texture2D" uid="uid://hypspuwulevq" path="res://assets/Basic Character template 4-direction/Idle/Idle_side.png" id="5_c11yd"]
+
+[node name="CombatManager" type="Node2D" unique_id=2024538256]
+script = ExtResource("1_puw3m")
+test_spell = ExtResource("2_c11yd")
+
+[node name="CombatGrid" type="TileMapLayer" parent="." unique_id=1763207136]
+script = ExtResource("2_wfdjv")
+
+[node name="Player" type="Node2D" parent="." unique_id=1762724103]
+position = Vector2(40, 80)
+script = ExtResource("3_l68es")
+character_name = "Player"
+
+[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=942790252]
+texture = ExtResource("4_lk7ft")
+hframes = 4
+
+[node name="HPLabel" type="Label" parent="Player" unique_id=151495912]
+offset_left = -20.0
+offset_top = -34.0
+offset_right = 20.0
+offset_bottom = -11.0
+
+[node name="Enemy" type="Node2D" parent="." unique_id=245874305]
+position = Vector2(120, 160)
+script = ExtResource("3_l68es")
+character_name = "Training Dummy"
+max_hp = 20
+
+[node name="Sprite2D" type="Sprite2D" parent="Enemy" unique_id=1135118382]
+texture = ExtResource("5_c11yd")
+hframes = 4
+
+[node name="HPLabel" type="Label" parent="Enemy" unique_id=1617070115]
+offset_left = -20.0
+offset_top = -34.0
+offset_right = 20.0
+offset_bottom = -11.0
+
+[node name="CastSpellButton" type="Button" parent="." unique_id=151463399]
+offset_left = 149.0
+offset_top = 9.0
+offset_right = 193.0
+offset_bottom = 17.0
+text = "Cast Spell"
+
+[connection signal="pressed" from="CastSpellButton" to="." method="_on_cast_spell_button_pressed"]

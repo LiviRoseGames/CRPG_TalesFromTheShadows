@@ -9,9 +9,55 @@ var is_dead: bool = false
 
 var conditions: Array[ConditionState] = []
 
+# Combat Resources
+
+var action_available: bool = true
+var bonus_action_available: bool = true
+var reaction_available: bool = true
+
+var movement_remaining: int = 0
+
 func initialize(character_data: CharacterData) -> void:
 	current_hp = character_data.get_max_hp()
 	temporary_hp = 0
+
+func reset_turn_resources() -> void:
+	action_available = true
+	bonus_action_available = true
+	reaction_available = true
+	movement_remaining = 0
+
+func has_action() -> bool:
+	return action_available
+
+
+func has_bonus_action() -> bool:
+	return bonus_action_available
+
+
+func has_reaction() -> bool:
+	return reaction_available
+
+func use_action() -> bool:
+	if not action_available:
+		return false
+
+	action_available = false
+	return true
+
+func use_bonus_action() -> bool:
+	if not bonus_action_available:
+		return false
+
+	bonus_action_available = false
+	return true
+
+func use_reaction() -> bool:
+	if not reaction_available:
+		return false
+
+	reaction_available = false
+	return true
 
 func take_damage(amount: int) -> void:
 	if amount <= 0:

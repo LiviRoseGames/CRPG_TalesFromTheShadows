@@ -1,10 +1,19 @@
 [gd_scene format=3 uid="uid://dt05qdkrqw3ew"]
 
 [ext_resource type="Script" uid="uid://dmk6y1evfjuxj" path="res://characters/character.gd" id="1_54qew"]
-[ext_resource type="Texture2D" uid="uid://dq43u56w1ywqo" path="res://icon.svg" id="2_qqr4u"]
+[ext_resource type="Texture2D" uid="uid://dyi0y21mtqhkk" path="res://assets/Basic Character template 4-direction/Idle/Idle_front.png" id="2_qqr4u"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ef17l"]
+radius = 6.0
+height = 20.0
 
 [node name="Character" type="CharacterBody2D" unique_id=1147909112]
 script = ExtResource("1_54qew")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2114215367]
 texture = ExtResource("2_qqr4u")
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=468984913]
+position = Vector2(0, -1)
+shape = SubResource("CapsuleShape2D_ef17l")

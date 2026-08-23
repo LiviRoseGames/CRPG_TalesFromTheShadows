@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DamageEffect" format=3 uid="uid://ftefo8mlx38j"]
+
+[ext_resource type="Script" uid="uid://5fd8x7hckdu6" path="res://magic/resources/damage_effect.gd" id="1_4m4ac"]
+
+[resource]
+script = ExtResource("1_4m4ac")
+dice_size = 4
+metadata/_custom_type_script = "uid://5fd8x7hckdu6"
