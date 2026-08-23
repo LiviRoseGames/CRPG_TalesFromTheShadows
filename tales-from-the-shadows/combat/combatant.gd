@@ -5,6 +5,7 @@ class_name Combatant
 
 @export var character_name := "Combatant"
 @export var max_hp := 10
+@export var initiative_bonus: int = 0
 
 var current_hp: int
 
