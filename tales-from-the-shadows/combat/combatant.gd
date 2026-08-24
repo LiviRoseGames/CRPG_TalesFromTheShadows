@@ -7,11 +7,20 @@ class_name Combatant
 @export var max_hp := 10
 @export var initiative_bonus: int = 0
 
+#@export_category("Grid")
+#@export var grid_position: Vector2i
+
+@export_category("Combat")
+#@export var movement_speed: int = 30
+@export var movement_speed: int = 6
+
 var action_available: bool = true
 var bonus_action_available: bool = true
 var reaction_available: bool = true
 
 var current_hp: int
+
+var grid_position: Vector2i
 
 func _ready() -> void:
 	current_hp = max_hp
@@ -76,3 +85,10 @@ func update_hp_display() -> void:
 		current_hp,
 		max_hp
 	]
+
+func set_grid_position(position: Vector2i) -> void:
+	grid_position = position
+
+func can_move_to(cell: Vector2i) -> bool:
+	var distance : int = abs(cell.x - grid_position.x) + abs(cell.y - grid_position.y)
+	return distance <= movement_speed
