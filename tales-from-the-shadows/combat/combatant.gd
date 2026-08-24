@@ -81,6 +81,20 @@ func use_casting_resource(casting_time: String) -> bool:
 			print("Unknown casting time: ", casting_time)
 			return false
 
+func basic_attack(target: Combatant) -> void:
+	var damage: int = 1
+
+	print(
+		character_name,
+		" attacks ",
+		target.character_name,
+		" for ",
+		damage,
+		" damage!"
+	)
+
+	target.take_damage(damage)
+
 func take_damage(amount: int) -> void:
 	current_hp = max(current_hp - amount, 0)
 	update_hp_display()

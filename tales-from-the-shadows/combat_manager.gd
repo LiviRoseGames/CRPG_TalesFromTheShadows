@@ -64,11 +64,15 @@ func _on_grid_cell_clicked(cell: Vector2i) -> void:
 	)
 
 func setup_combatants() -> void:
-	player.set_grid_position(Vector2i(2, 4))
-	enemy.set_grid_position(Vector2i(9, 4))
+	combat_grid.place_combatant(
+		player,
+		Vector2i(2, 4)
+	)
 
-	player.global_position = combat_grid.grid_to_world(player.grid_position)
-	enemy.global_position = combat_grid.grid_to_world(enemy.grid_position)
+	combat_grid.place_combatant(
+		enemy,
+		Vector2i(9, 4)
+	)
 
 func get_combatant_at_position(mouse_position: Vector2) -> Combatant:
 	var combatants: Array[Combatant] = [
@@ -152,17 +156,39 @@ func roll_initiative() -> void:
 		turn_order.append(entry.combatant)
 
 func start_turn() -> void:
-	var combatant := turn_order[current_turn]
+	var combatant: Combatant = turn_order[current_turn]
 
 	combatant.start_turn()
 
-	print("It's ", combatant.name, "'s turn!")
+	print(
+		"It's ",
+		combatant.name,
+		"'s turn! Movement: ",
+		combatant.movement_remaining,
+		" ft"
+	)
+
+	if combatant == player:
+		player_turn()
+	else:
+		enemy_turn()
+
+func player_turn() -> void:
+	combat_grid.show_movement_range(
+		player.grid_position,
+		player.movement_remaining
+	)
+
+	print("Waiting for player input...")
 
 func end_turn() -> void:
-	var combatant := turn_order[current_turn]
+	var combatant: Combatant = turn_order[current_turn]
 
 	combatant.action_available = false
 	combatant.bonus_action_available = false
+	combatant.reaction_available = false
+
+	combat_grid.clear_movement_range()
 
 	current_turn += 1
 
@@ -170,7 +196,92 @@ func end_turn() -> void:
 		current_turn = 0
 
 	start_turn()
-	
+
+func enemy_turn() -> void:
+	combat_grid.clear_movement_range()
+
+	print("Enemy AI turn!")
+
+	# Move toward the player if we're not already in melee range.
+	var distance: int = (
+		abs(enemy.grid_position.x - player.grid_position.x)
+		+ abs(enemy.grid_position.y - player.grid_position.y)
+	)
+
+	if distance > 1:
+		move_enemy_toward_player()
+
+	# Check our distance again after moving.
+	distance = (
+		abs(enemy.grid_position.x - player.grid_position.x)
+		+ abs(enemy.grid_position.y - player.grid_position.y)
+	)
+
+	# Attack if we're in melee range and still have our action.
+	if distance <= 1 and enemy.action_available:
+		if enemy.use_action():
+			enemy.basic_attack(player)
+
+	end_turn()
+
+func move_enemy_toward_player() -> void:
+	var current := enemy.grid_position
+	var target := player.grid_position
+
+	for i in range(enemy.movement_remaining / combat_grid.CELL_SIZE_FEET):
+		# Stop moving if we're already adjacent to the player.
+		var current_distance: int = (
+			abs(current.x - target.x)
+			+ abs(current.y - target.y)
+		)
+
+		if current_distance <= 1:
+			break
+
+		var possible_moves: Array[Vector2i] = [
+			current + Vector2i(1, 0),
+			current + Vector2i(-1, 0),
+			current + Vector2i(0, 1),
+			current + Vector2i(0, -1)
+		]
+
+		var best_cell := current
+		var best_distance: int = 999999
+
+		for cell in possible_moves:
+			if not combat_grid.is_in_bounds(cell):
+				continue
+
+			if combat_grid.is_occupied(cell):
+				continue
+
+			var distance: int = (
+				abs(cell.x - target.x)
+				+ abs(cell.y - target.y)
+			)
+
+			if distance < best_distance:
+				best_distance = distance
+				best_cell = cell
+
+		if best_cell == current:
+			break
+
+		if not combat_grid.move_combatant(enemy, best_cell):
+			break
+
+		enemy.movement_remaining -= combat_grid.CELL_SIZE_FEET
+		current = best_cell
+
+		print(
+			enemy.name,
+			" moved to ",
+			enemy.grid_position,
+			". Movement remaining: ",
+			enemy.movement_remaining,
+			" ft"
+		)
+
 func _on_cast_spell_button_pressed() -> void:
 	var combatant := turn_order[current_turn]
 
