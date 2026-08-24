@@ -17,6 +17,7 @@ var targeting: bool = false
 
 func _ready() -> void:
 	print("Combat started!")
+	combat_grid.cell_clicked.connect(_on_grid_cell_clicked)
 
 	setup_combatants()
 
@@ -38,6 +39,29 @@ func _input(event: InputEvent) -> void:
 
 			if target != null:
 				select_target(target)
+
+func _on_grid_cell_clicked(cell: Vector2i) -> void:
+	if not player.can_move_to(cell, combat_grid):
+		print("Cell is not reachable: ", cell)
+		return
+
+	var moved := player.move_to_grid(cell, combat_grid)
+
+	if not moved:
+		return
+
+	print(
+		player.name,
+		" moved to ",
+		player.grid_position,
+		". Movement remaining: ",
+		player.movement_remaining
+	)
+
+	combat_grid.show_movement_range(
+		player.grid_position,
+		player.movement_remaining
+	)
 
 func setup_combatants() -> void:
 	player.set_grid_position(Vector2i(2, 4))
@@ -130,9 +154,7 @@ func roll_initiative() -> void:
 func start_turn() -> void:
 	var combatant := turn_order[current_turn]
 
-	combatant.action_available = true
-	combatant.bonus_action_available = true
-	combatant.reaction_available = true
+	combatant.start_turn()
 
 	print("It's ", combatant.name, "'s turn!")
 

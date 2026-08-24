@@ -7,6 +7,18 @@ var hovered_cell := Vector2i(-1, -1)
 
 var occupied_cells: Dictionary = {}
 
+const CELL_SIZE_FEET: int = 5
+
+signal cell_clicked(cell: Vector2i)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			var cell := world_to_grid(event.position)
+
+			if is_cell_valid(cell):
+				cell_clicked.emit(cell)
+
 func grid_to_world(grid_position: Vector2i) -> Vector2:
 	return to_global(map_to_local(grid_position))
 
@@ -91,16 +103,18 @@ func get_reachable_cells(
 
 	var reachable: Array[Vector2i] = []
 
+	var movement_cells: int = movement / CELL_SIZE_FEET
+
 	for x in range(10):
 		for y in range(15):
 			var cell := Vector2i(x, y)
 
-			var distance : int = (
+			var distance: int = (
 				abs(cell.x - start.x)
 				+ abs(cell.y - start.y)
 			)
 
-			if distance <= movement:
+			if distance <= movement_cells:
 				reachable.append(cell)
 
 	return reachable

@@ -11,8 +11,9 @@ class_name Combatant
 #@export var grid_position: Vector2i
 
 @export_category("Combat")
-#@export var movement_speed: int = 30
-@export var movement_speed: int = 6
+@export var movement_speed: int = 30
+
+var movement_remaining: int = 0
 
 var action_available: bool = true
 var bonus_action_available: bool = true
@@ -30,8 +31,13 @@ func start_turn() -> void:
 	action_available = true
 	bonus_action_available = true
 	reaction_available = true
+	movement_remaining = movement_speed
 	
-	print(name, "'s resources refreshed.")
+	print(
+		name,
+		"'s resources refreshed. Movement: ",
+		movement_remaining
+	)
 
 func use_action() -> bool:
 	if not action_available:
@@ -89,6 +95,27 @@ func update_hp_display() -> void:
 func set_grid_position(position: Vector2i) -> void:
 	grid_position = position
 
-func can_move_to(cell: Vector2i) -> bool:
-	var distance : int = abs(cell.x - grid_position.x) + abs(cell.y - grid_position.y)
-	return distance <= movement_speed
+func get_movement_cost(destination: Vector2i, combat_grid) -> int:
+	var cells_moved : int = (
+		abs(destination.x - grid_position.x)
+		+ abs(destination.y - grid_position.y)
+	)
+
+	return cells_moved * combat_grid.CELL_SIZE_FEET
+
+func can_move_to(cell: Vector2i, combat_grid) -> bool:
+	var cost := get_movement_cost(cell, combat_grid)
+	return cost <= movement_remaining
+
+func move_to_grid(cell: Vector2i, combat_grid) -> bool:
+	var cost := get_movement_cost(cell, combat_grid)
+
+	if cost > movement_remaining:
+		return false
+
+	movement_remaining -= cost
+
+	grid_position = cell
+	global_position = combat_grid.grid_to_world(cell)
+
+	return true
