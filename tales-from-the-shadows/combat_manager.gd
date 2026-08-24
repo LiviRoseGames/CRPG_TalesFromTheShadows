@@ -58,6 +58,8 @@ func roll_initiative() -> void:
 func start_turn() -> void:
 	var combatant := turn_order[current_turn]
 
+	combatant.start_turn()
+
 	print("It's ", combatant.name, "'s turn!")
 
 func end_turn() -> void:
@@ -73,6 +75,10 @@ func _on_cast_spell_button_pressed() -> void:
 
 	if combatant != player:
 		print("It isn't the player's turn!")
+		return
+
+	if not player.use_casting_resource(test_spell.casting_time):
+		print("Cannot cast ", test_spell.spell_name, "!")
 		return
 
 	test_spell.cast(player, enemy)

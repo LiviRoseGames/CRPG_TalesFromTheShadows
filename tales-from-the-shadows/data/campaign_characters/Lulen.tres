@@ -1,14 +1,13 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://cgtq62btawohp"]
 
 [ext_resource type="Script" uid="uid://cwwjskuwu62bm" path="res://data/character_data.gd" id="1_irs1r"]
-[ext_resource type="Resource" uid="uid://c53d40iw7cqqc" path="res://data/test_bard.tres" id="1_spbt0"]
+[ext_resource type="Script" uid="uid://rdlnw3buporg" path="res://data/class_data.gd" id="1_spbt0"]
 
 [resource]
 script = ExtResource("1_irs1r")
 character_name = "Lulen"
 description = "A runaway princess perhaps?"
 level = 3
-character_class = ExtResource("1_spbt0")
 dexterity = 13
 constitution = 14
 intelligence = 12
