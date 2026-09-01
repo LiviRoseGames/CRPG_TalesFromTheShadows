@@ -214,11 +214,15 @@ func enemy_turn() -> void:
 
 	move_enemy_toward_player()
 
-	if is_enemy_in_attack_range():
-		if enemy.use_action():
-			enemy.basic_attack(player)
+	# Attack if now in range
+	if enemy.is_target_in_weapon_range(player, combat_grid):
+		enemy.basic_attack(
+			player,
+			combat_grid,
+			Dice.RollMode.ADVANTAGE
+		)
 	else:
-		print("Enemy is not in attack range.")
+		print("Enemy cannot attack: player is out of range.")
 
 	end_turn()
 

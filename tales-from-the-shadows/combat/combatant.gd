@@ -92,29 +92,83 @@ func use_casting_resource(casting_time: String) -> bool:
 			print("Unknown casting time: ", casting_time)
 			return false
 
-func basic_attack(target: Combatant) -> void:
+func basic_attack(
+	target: Combatant,
+	combat_grid,
+	roll_mode: Dice.RollMode = Dice.RollMode.NORMAL
+) -> AttackResult:
+	var result := AttackResult.new()
+
 	if equipped_weapon == null:
 		print(character_name, " has no weapon equipped!")
-		return
+		return result
 
-	var roll: int = Dice.roll_d20()
-	var total: int = roll + attack_bonus
+	if not is_target_in_weapon_range(target, combat_grid):
+		print(
+			character_name,
+			" cannot attack ",
+			target.character_name,
+			": target is out of range."
+		)
+		return result
+
+	result.dice_result = Dice.roll_d20_with_mode(roll_mode)
+	result.roll = result.dice_result.total
+	result.modifier = attack_bonus
+	result.total = result.roll + result.modifier
+	result.target_defense = target.armor_class
+
+	result.critical_hit = result.roll == 20
+	result.critical_miss = result.roll == 1
+
+	if result.critical_miss:
+		result.hit = false
+	elif result.critical_hit:
+		result.hit = true
+	else:
+		result.hit = result.total >= result.target_defense
 
 	print(
 		character_name,
 		" attacks ",
 		target.character_name,
 		": d20 ",
-		roll,
+		result.roll,
 		" + ",
-		attack_bonus,
+		result.modifier,
 		" = ",
-		total,
+		result.total,
 		" vs AC ",
-		target.armor_class
+		result.target_defense
 	)
 
-	if total >= target.armor_class:
+	if roll_mode != Dice.RollMode.NORMAL:
+		print("Rolls: ", result.dice_result.rolls)
+
+	if result.critical_hit:
+		print("Critical Hit!")
+
+		var damage: int = equipped_weapon.roll_damage()
+		var critical_damage: int = equipped_weapon.roll_damage()
+
+		damage += critical_damage
+
+		print(
+			"Critical! ",
+			equipped_weapon.weapon_name,
+			" deals ",
+			damage,
+			" ",
+			equipped_weapon.damage_type,
+			" damage!"
+		)
+
+		target.take_damage(damage)
+
+	elif result.critical_miss:
+		print("Critical Miss!")
+
+	elif result.hit:
 		var damage: int = equipped_weapon.roll_damage()
 
 		print(
@@ -128,8 +182,11 @@ func basic_attack(target: Combatant) -> void:
 		)
 
 		target.take_damage(damage)
+
 	else:
 		print("Miss!")
+	
+	return result
 
 func take_damage(amount: int) -> void:
 	current_hp = max(current_hp - amount, 0)
@@ -141,6 +198,28 @@ func update_hp_display() -> void:
 		current_hp,
 		max_hp
 	]
+
+func get_weapon_distance_to(target: Combatant, combat_grid) -> int:
+	var cells: int = (
+		abs(target.grid_position.x - grid_position.x)
+		+ abs(target.grid_position.y - grid_position.y)
+	)
+
+	return cells * combat_grid.CELL_SIZE_FEET
+
+func is_target_in_weapon_range(
+	target: Combatant,
+	combat_grid
+) -> bool:
+	if equipped_weapon == null:
+		return false
+
+	var distance: int = get_weapon_distance_to(
+		target,
+		combat_grid
+	)
+
+	return distance <= equipped_weapon.normal_range_feet
 
 func set_grid_position(position: Vector2i) -> void:
 	grid_position = position
