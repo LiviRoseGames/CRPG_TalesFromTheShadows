@@ -5,6 +5,7 @@ extends Node2D
 @onready var combat_grid: CombatGrid = $CombatGrid
 
 @export var test_spell: SpellData
+@export var test_weapon: WeaponData
 
 #30 feet * 10 pixels = 300 pixels
 const PIXELS_PER_FOOT := 10.0
@@ -28,6 +29,15 @@ func _ready() -> void:
 
 	roll_initiative()
 	start_turn()
+
+	print("Test Weapon: ", test_weapon)
+	print("Weapon Name: ", test_weapon.weapon_name)
+	print(
+		"Damage: ",
+		test_weapon.damage_dice_count,
+		"d",
+		test_weapon.damage_dice_size
+)
 
 func _input(event: InputEvent) -> void:
 	if not targeting:
@@ -202,27 +212,31 @@ func enemy_turn() -> void:
 
 	print("Enemy AI turn!")
 
-	# Move toward the player if we're not already in melee range.
+	move_enemy_toward_player()
+
+	if is_enemy_in_attack_range():
+		if enemy.use_action():
+			enemy.basic_attack(player)
+	else:
+		print("Enemy is not in attack range.")
+
+	end_turn()
+
+func is_enemy_in_attack_range() -> bool:
+	if enemy.equipped_weapon == null:
+		return false
+
 	var distance: int = (
 		abs(enemy.grid_position.x - player.grid_position.x)
 		+ abs(enemy.grid_position.y - player.grid_position.y)
 	)
 
-	if distance > 1:
-		move_enemy_toward_player()
-
-	# Check our distance again after moving.
-	distance = (
-		abs(enemy.grid_position.x - player.grid_position.x)
-		+ abs(enemy.grid_position.y - player.grid_position.y)
+	var range_cells: int = (
+		enemy.equipped_weapon.normal_range_feet
+		/ combat_grid.CELL_SIZE_FEET
 	)
 
-	# Attack if we're in melee range and still have our action.
-	if distance <= 1 and enemy.action_available:
-		if enemy.use_action():
-			enemy.basic_attack(player)
-
-	end_turn()
+	return distance <= range_cells
 
 func move_enemy_toward_player() -> void:
 	var current := enemy.grid_position

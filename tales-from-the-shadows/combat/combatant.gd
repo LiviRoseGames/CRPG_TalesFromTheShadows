@@ -12,6 +12,12 @@ class_name Combatant
 
 @export_category("Combat")
 @export var movement_speed: int = 30
+@export var armor_class: int = 10
+@export var attack_bonus: int = 0
+
+@export_category("Equipment")
+@export var equipped_weapon: WeaponData
+
 
 var movement_remaining: int = 0
 
@@ -26,6 +32,11 @@ var grid_position: Vector2i
 func _ready() -> void:
 	current_hp = max_hp
 	update_hp_display()
+	
+	print(
+		"Enemy weapon: ",
+		equipped_weapon.weapon_name
+)
 
 func start_turn() -> void:
 	action_available = true
@@ -82,18 +93,43 @@ func use_casting_resource(casting_time: String) -> bool:
 			return false
 
 func basic_attack(target: Combatant) -> void:
-	var damage: int = 1
+	if equipped_weapon == null:
+		print(character_name, " has no weapon equipped!")
+		return
+
+	var roll: int = Dice.roll_d20()
+	var total: int = roll + attack_bonus
 
 	print(
 		character_name,
 		" attacks ",
 		target.character_name,
-		" for ",
-		damage,
-		" damage!"
+		": d20 ",
+		roll,
+		" + ",
+		attack_bonus,
+		" = ",
+		total,
+		" vs AC ",
+		target.armor_class
 	)
 
-	target.take_damage(damage)
+	if total >= target.armor_class:
+		var damage: int = equipped_weapon.roll_damage()
+
+		print(
+			"Hit! ",
+			equipped_weapon.weapon_name,
+			" deals ",
+			damage,
+			" ",
+			equipped_weapon.damage_type,
+			" damage!"
+		)
+
+		target.take_damage(damage)
+	else:
+		print("Miss!")
 
 func take_damage(amount: int) -> void:
 	current_hp = max(current_hp - amount, 0)
